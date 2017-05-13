@@ -19,5 +19,6 @@ public class NotifyEvent extends Event {
     public int eventType;
     public String pageId;
     public String meetingId;
+    public String meetingName;
     public String userId;
 }

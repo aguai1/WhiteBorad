@@ -12,13 +12,7 @@
         android:id="@+id/backlayout"
         android:layout_centerVertical="true"
         >
-        <Button
-            android:id="@+id/back"
-            android:layout_width="25dp"
-            android:layout_height="fill_parent"
-            android:background="@mipmap/ic_back"
-            android:layout_marginLeft="10dp"
-            />
+
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
@@ -36,12 +30,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
         >
-        <Button
-            android:id="@+id/iv_mic"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/bg_btn_mic"
-            />
+
         <Button
             android:id="@+id/iv_video"
             android:layout_width="30dp"

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.view.View;
-import android.widget.ImageView;
-import butterknife.Bind;
 import cn.scooper.com.easylib.ui.BaseActivity;
 import cn.scooper.com.easylib.utils.SharedPreferencesHelper;
 import cn.scooper.com.whiteboard.R;

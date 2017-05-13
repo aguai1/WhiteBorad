@@ -32,6 +32,7 @@ public enum Request {
     public static String userName;
     public static int userId;
     public static String meetingId;
+    public static String meetingName;
     private int lastUpdateId;
 
 

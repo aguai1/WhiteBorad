@@ -29,7 +29,7 @@ public enum MinaClient {
     public void stopConnect() {
 
         if (session != null && connector != null) {
-            session.getCloseFuture().awaitUninterruptibly();
+//            session.getCloseFuture().awaitUninterruptibly();
             connector.dispose();
         }
     }

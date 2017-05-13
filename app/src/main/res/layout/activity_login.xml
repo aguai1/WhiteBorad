@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@mipmap/icon_main"
+            />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff"
+            >
+            <TextView
+                android:id="@+id/inviteId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                />
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="号码" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="密码"
+                android:layout_margin="10dp"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/btn_ok"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:textColor="@color/white"
+                android:background="?attr/colorAccent"
+                android:text="登录" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

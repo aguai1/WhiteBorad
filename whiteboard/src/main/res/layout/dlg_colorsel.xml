@@ -16,6 +16,7 @@
         <LinearLayout
             android:id="@+id/content"
             android:padding="10dp"
+            android:background="#ddd"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

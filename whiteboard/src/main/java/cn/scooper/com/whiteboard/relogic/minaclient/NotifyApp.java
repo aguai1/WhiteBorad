@@ -41,9 +41,12 @@ public enum NotifyApp {
                 break;
             case Const.EVENT_CREATE:
                 Request.meetingId = StringUtils.getStringContent(data, "meeting_id");
+                Request.meetingName = StringUtils.getStringContent(data, "meeting_name");
+
                 NotifyEvent notifyEvent = new NotifyEvent();
                 notifyEvent.eventType = NotifyEvent.NOTIFY_CREATE_SUCCEED;
                 notifyEvent.meetingId = Request.meetingId;
+                notifyEvent.meetingName =  Request.meetingName;;
                 RxBus.get().send(notifyEvent);
                 break;
             case Const.EVENT_EXIT:

@@ -2,7 +2,6 @@ package cn.scooper.com.app.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ import rx.functions.Action1;
 public class CreateMeetingActivity extends BaseActivity {
 
     @Bind(R.id.meetingName)EditText meetingName;
-    @Bind(R.id.meetingId)TextView meetingId;
     @Bind(R.id.userId) TextView userId;
     @OnClick({R.id.btn_ok})
     public void onClick(View view){
@@ -36,12 +34,12 @@ public class CreateMeetingActivity extends BaseActivity {
     }
     @Override
     public int bindLayout() {
-        return R.layout.activity_menu;
+        return R.layout.activity_createmeeting;
     }
 
     @Override
     public boolean translucentStatus() {
-        return false;
+        return true;
     }
 
     @Override

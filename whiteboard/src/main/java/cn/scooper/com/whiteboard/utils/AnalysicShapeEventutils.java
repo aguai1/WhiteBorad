@@ -58,7 +58,8 @@ public class AnalysicShapeEventutils {
 
     public static byte[] dealWithPicture(ShapeBean shapeBean) throws Exception {
         Bitmap bitmap = WBImageLoader.getInstance().loadBitmap(shapeBean.picPath);
-        byte[] byteArray = getBitmapByteArr(bitmap);
+        byte[] byteArray=BitmapChangeUtils.saveBitmapToBMP(bitmap);
+//        byte[] byteArray = getBitmapByteArr(bitmap);
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 

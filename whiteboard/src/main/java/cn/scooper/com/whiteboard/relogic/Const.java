@@ -3,9 +3,6 @@ package cn.scooper.com.whiteboard.relogic;
 
 public class Const {
 
-    public static final String DEFAULT_HOST = "192.168.191.1";
-    public static final String DEFAULT_PORT = "6888";
-
 
     public static final String EVENT_ACTIVE = "active";
     public static final String EVENT_LOGIN = "login";

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.trello.rxlifecycle.ActivityEvent;
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.scooper.com.app.Setting;
 import cn.scooper.com.easylib.rxbus.RxBus;
 import cn.scooper.com.easylib.ui.BaseActivity;
 import cn.scooper.com.easylib.utils.LogUtil;
@@ -27,12 +28,8 @@ import rx.functions.Action1;
 public class LoginActivity extends BaseActivity {
     private final String USERNAME="username";
     private final String PASSWD="passwd";
-    private final String HOST="host";
-    private final String PORT="port";
     @Bind(R.id.username)EditText username;
     @Bind(R.id.password)EditText password;
-    @Bind(R.id.port)EditText port;
-    @Bind(R.id.host)EditText host;
     @Bind(R.id.inviteId)TextView inviteId;
     @OnClick({R.id.btn_ok})
     public void onClick(View view){
@@ -41,28 +38,17 @@ public class LoginActivity extends BaseActivity {
 
                 String v_name = username.getText().toString();
                 String v_pass= password.getText().toString();
-                String v_port = port.getText().toString();
-                String v_host = host.getText().toString();
 //                if(TextUtils.isEmpty(v_name)){
 //                    ToastUtils.showShort("用户名为空");
 //                    return;
 //                }
-                if(TextUtils.isEmpty(v_port)){
-                    ToastUtils.showShort("端口为空");
-                    return;
-                }
-                if(TextUtils.isEmpty(v_host)){
-                    ToastUtils.showShort("服务器地址为空");
-                    return;
-                }
                 SharedPreferencesUtils.put(USERNAME,v_name);
                 SharedPreferencesUtils.put(PASSWD,v_pass);
-                SharedPreferencesUtils.put(PORT,v_port);
-                SharedPreferencesUtils.put(HOST,v_host);
 
                 loadingDialog.setMsg("正在登陆请稍候。。。");
                 loadingDialog.show();
-                Request.IINSTANCE.connectServer(v_host, Integer.parseInt(v_port));
+                Request.IINSTANCE.stopConnectServer();
+                Request.IINSTANCE.connectServer(Setting.CONNECT_IP, Setting.CONNECT_PORT);
                 Request.IINSTANCE.login(v_name,v_pass);
 
         }
@@ -75,14 +61,12 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public boolean translucentStatus() {
-        return false;
+        return true;
     }
 
     @Override
     public void initView(View view) {
 
-        host.setText(SharedPreferencesUtils.get( HOST, Const.DEFAULT_HOST).toString());
-        port.setText(SharedPreferencesUtils.get( PORT, Const.DEFAULT_PORT).toString());
         username.setText(SharedPreferencesUtils.get( USERNAME, "").toString());
         password.setText(SharedPreferencesUtils.get(PASSWD, "").toString());
     }

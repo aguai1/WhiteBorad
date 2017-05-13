@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -122,6 +123,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         displayInfoView = (SfDisplayInfoView) findViewById(R.id.drawerView);
         rv_parent = (RelativeLayout) findViewById(R.id.rv_lay);
+       TextView title= (TextView) findViewById(R.id.title);
+        title.setText(Request.meetingName);
         initArcMenu();
         initListener();
     }

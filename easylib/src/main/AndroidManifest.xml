@@ -1,0 +1,15 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cn.scooper.com.easylib">
+
+    <application
+        android:theme="@style/AppTheme">
+        <!--摄像-->
+        <activity android:name=".ui.recorder.RecorderActivity" />
+        <!--图片查看器-->
+        <activity android:name=".ui.image.ImageDetailActivity"
+            android:theme="@style/ImageDetailActivityStyle" />
+        <!--自定义多选单选相册-->
+        <activity android:name=".ui.album.PhotoAlbumActivity" />
+    </application>
+
+</manifest>

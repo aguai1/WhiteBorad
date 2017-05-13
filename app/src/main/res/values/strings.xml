@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="exitByClickEngin">再按一次退出</string>
+    <string name="exit">退出</string>
+    <string name="white_default_port">8080</string>
+</resources>

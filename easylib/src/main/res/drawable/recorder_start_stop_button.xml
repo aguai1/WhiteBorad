@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+    <!-- 填充的颜色 -->
+
+    <solid android:color="#c50100" />
+
+    <!-- 设置按钮的左下角和右下角是圆形边框 -->
+
+    <corners
+        android:topLeftRadius="54dp"
+        android:topRightRadius="54dp"
+        android:bottomLeftRadius="54dp"
+        android:bottomRightRadius="54dp" />
+
+    <!-- 描边 -->
+
+    <stroke
+        android:width="3dp"
+        android:color="#ffffff" />
+
+    <!-- padding：Button里面的文字与Button边界的间隔 -->
+
+    <padding
+        android:bottom="10dp"
+        android:left="10dp"
+        android:right="10dp"
+        android:top="10dp" />
+
+</shape>

@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">whiteboard</string>
+    <string name="redo">重做</string>
+    <string name="udo">撤销</string>
+    <string name="clear">清空</string>
+    <string name="meetingTheme">会议主题:</string>
+    <string name="createUser">创建人员:</string>
+    <string name="user">志向</string>
+    <string name="beginTime">开始时间:</string>
+    <string name="alluser">参与人员:</string>
+    <string name="exit">退出</string>
+    <string name="filepag1">文件夹一</string>
+    <string name="filepag2">文件夹二</string>
+    <string name="invite">邀请</string>
+    <string name="userId">用户id：</string>
+
+</resources>

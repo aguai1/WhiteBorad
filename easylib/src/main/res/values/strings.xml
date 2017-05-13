@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">电子白板</string>
+    <string name="loading_default_msg">正在加载请稍后</string>
+    <string name="dialog_no_msg">输入提示信息</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
+    <string name="done_loading_hint">正在加载数据</string>
+    <string name="exitByClickEngin">再按一次退出</string>
+    <!--相册-->
+    <string name="all_photo">所有图片</string>
+    <string name="photo_num">%1$d张</string>
+</resources>

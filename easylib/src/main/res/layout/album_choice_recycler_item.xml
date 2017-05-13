@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/click_btn"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:background="#fff">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black_alpha_10" 
+        android:layout_marginLeft="19dp"
+        android:layout_marginRight="19dp"/>
+    
+    <ImageView
+        android:id="@+id/the_cover"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_centerVertical="true"
+        android:scaleType="center"
+        android:layout_marginLeft="25dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/the_cover"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="14dp">
+
+        <TextView
+            android:id="@+id/album_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_alpha_54"
+            android:text="@string/all_photo"
+            android:textSize="15sp"
+            android:typeface="monospace"
+            android:includeFontPadding="false"
+            android:paddingBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/photo_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/photo_num"
+            android:includeFontPadding="false"
+            android:textColor="@color/black_alpha_36"
+            android:textSize="14sp"
+            android:typeface="monospace" />
+
+    </LinearLayout>
+    
+</RelativeLayout>

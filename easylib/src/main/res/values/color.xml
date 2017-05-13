@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#333333</color>
+    <color name="colorPrimaryDark">#333333</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="black_alpha_100">#041835</color>
+    <color name="black_alpha_90">#e6041835</color>
+    <color name="black_alpha_54">#8a041835</color>
+    <color name="black_alpha_36">#5c041835</color>
+    <color name="black_alpha_18">#2e041835</color>
+    <color name="black_alpha_10">#19041835</color>
+    <color name="black_alpha_6">#0f041835</color>
+
+    <color name="white">#ffffff</color>
+    <color name="white_alpha_100">#ffffffff</color>
+    <color name="white_alpha_95">#f2ffffff</color>
+    <color name="white_alpha_71">#b5ffffff</color>
+    <color name="white_alpha_61">#9bffffff</color>
+    <color name="white_alpha_54">#8affffff</color>
+    <color name="white_alpha_41">#68ffffff</color>
+    <color name="white_alpha_40">#66ffffff</color>
+    <color name="white_alpha_36">#5bffffff</color>
+    <color name="white_alpha_35">#59ffffff</color>
+    <color name="white_alpha_31">#4fffffff</color>
+    <color name="white_alpha_23">#3affffff</color>
+    <color name="white_alpha_21">#35ffffff</color>
+    <color name="white_alpha_18">#2effffff</color>
+    <color name="white_alpha_12">#1fffffff</color>
+    <color name="white_alpha_6">#0fffffff</color>
+    <color name="black_no_alpha_36">#a4acb6</color>
+    <color name="black_no_alpha_10">#e5e5e5</color>
+
+    <color name="top_bar_bg">#E8FEFF</color>
+
+
+    <color name="pressed_color">#B8F2F5</color>
+    <color name="default_color">#E8FEFF</color>
+
+    <color name="background_color_light">#f0f1f3</color>
+</resources>

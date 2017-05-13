@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="true">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/photo_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/action_bar"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:padding="3dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/album_choice_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/action_bar"
+        android:background="@color/background_color_light"
+        android:visibility="invisible" />
+
+    <RelativeLayout
+        android:id="@+id/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/background_color_light">
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:text="@string/cancel"
+            android:textColor="@color/black_alpha_36"
+            android:textSize="14sp"
+            android:padding="10dp"/>
+
+        <LinearLayout
+            android:id="@+id/change_photo_album_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/photo_album_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="@string/all_photo"
+                android:textColor="@color/black_alpha_54"
+                android:textSize="16sp"
+                android:typeface="monospace" />
+
+            <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="15dp"
+                android:layout_height="7dp"
+                android:src="@drawable/arrow_below"
+                android:tint="@color/black_alpha_54"
+                android:layout_marginLeft="3dp"/>
+
+        </LinearLayout>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/btn_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="完成"
+            android:textColor="@color/black_alpha_36"
+            android:textSize="14sp"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/action_bar"
+        android:background="@color/black_no_alpha_10" />
+
+
+</RelativeLayout>

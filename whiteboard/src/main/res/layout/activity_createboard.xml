@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rv_lay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:background="#ddd">
+    <include
+        layout="@layout/topbar_createboard"/>
+    <cn.scooper.com.whiteboard.views.whiteboardview.TempMultiLayoutView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/multiLayoutView"
+        android:layout_below="@+id/toolbar_lay"/>
+    <cn.scooper.com.whiteboard.views.arcmenu.ArcMenu
+        android:id="@+id/arc_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        app:position="right_bottom"
+        >
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/id_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/ic_add_white"
+            android:layout_margin="10dp"/>
+
+         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/iv_pen"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/btn_pen"
+            app:backgroundTint="@color/white"
+            />
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/iv_tool"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/btn_line"
+                app:backgroundTint="@color/white"
+                />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/iv_eraser"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/btn_eraser"
+                app:backgroundTint="@color/white"
+                />
+
+    </cn.scooper.com.whiteboard.views.arcmenu.ArcMenu>
+
+</RelativeLayout>

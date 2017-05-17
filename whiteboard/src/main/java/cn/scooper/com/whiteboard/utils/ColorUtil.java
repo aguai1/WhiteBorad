@@ -2,6 +2,8 @@ package cn.scooper.com.whiteboard.utils;
 
 import android.graphics.Color;
 
+import java.util.Random;
+
 /**
  * Created by Aguai on 2016/11/29.
  */
@@ -28,5 +30,10 @@ public class ColorUtil {
         int green = Color.green(color);
         int blue = Color.blue(color);
         return Color.argb(0,blue, green, red);
+    }
+    public static int randomColor(int alpha) {
+        Random rnd = new Random();
+        alpha = Math.min(Math.max(1, alpha), 255);
+        return Color.argb(alpha, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 }

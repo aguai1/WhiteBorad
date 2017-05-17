@@ -16,6 +16,11 @@
         android:layout_height="fill_parent"
         android:layout_below="@+id/toolbar_lay"
         />
+    <!--<cn.scooper.com.whiteboard.views.ChatRecyclerView-->
+        <!--android:id="@+id/recyclerView"-->
+        <!--android:layout_below="@+id/toolbar_lay"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"/>-->
 
     <cn.scooper.com.whiteboard.views.arcmenu.ArcMenu
         android:id="@+id/arc_menu"
@@ -68,6 +73,20 @@
             android:src="@drawable/btn_eraser"
             app:backgroundTint="@color/white"
             />
-
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/iv_chat"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/iv_chat"
+            app:backgroundTint="@color/white"
+            />
     </cn.scooper.com.whiteboard.views.arcmenu.ArcMenu>
+    <master.flame.danmaku.ui.widget.DanmakuView
+        android:id="@+id/danmaku_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar_lay"
+        />
+
 </RelativeLayout>

@@ -3,7 +3,7 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 24
     buildToolsVersion "25.0.0"
-
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 24
@@ -20,7 +20,6 @@ android {
                 jni.srcDirs = [] // disable automatic ndk-build call, which ignore our Android.mk
             }
         }
-
     }
     buildTypes {
         release {
@@ -41,7 +40,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile 'com.hyphenate:hyphenate-sdk:3.3.0'
     compile 'org.slf4j:slf4j-android:1.7.7'
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
+    compile 'com.github.ctiao:DanmakuFlameMaster:0.5.3'
 }

@@ -5,23 +5,29 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroupInfo;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.exceptions.HyphenateException;
 import com.scooper.cn.whiteboard.R;
 import com.trello.rxlifecycle.ActivityEvent;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import cn.scooper.com.easylib.WidgetStartHelper;
 import cn.scooper.com.easylib.rxbus.Event;
@@ -30,6 +36,8 @@ import cn.scooper.com.easylib.ui.BaseActivity;
 import cn.scooper.com.easylib.utils.BitmapUtils;
 import cn.scooper.com.easylib.utils.LogUtil;
 import cn.scooper.com.easylib.utils.ToastUtils;
+import cn.scooper.com.whiteboard.WhiteBoardApplication;
+import cn.scooper.com.whiteboard.adpter.ChatAdapter;
 import cn.scooper.com.whiteboard.db.domain.ShapeBean;
 import cn.scooper.com.whiteboard.db.helper.ShapeHelper;
 import cn.scooper.com.whiteboard.event.MyEventBus;
@@ -38,6 +46,10 @@ import cn.scooper.com.whiteboard.event.ShapeEvent;
 import cn.scooper.com.whiteboard.relogic.Const;
 import cn.scooper.com.whiteboard.relogic.imagecache.WBImageLoader;
 import cn.scooper.com.whiteboard.relogic.minaclient.Request;
+import cn.scooper.com.whiteboard.utils.AnimUtil;
+import cn.scooper.com.whiteboard.utils.ChatUtil;
+import cn.scooper.com.whiteboard.utils.ColorUtil;
+import cn.scooper.com.whiteboard.views.ChatRecyclerView;
 import cn.scooper.com.whiteboard.views.Slider;
 import cn.scooper.com.whiteboard.views.arcmenu.ArcMenu;
 import cn.scooper.com.whiteboard.views.whiteboardview.Constants;
@@ -45,6 +57,14 @@ import cn.scooper.com.whiteboard.views.whiteboardview.SfDisplayInfoView;
 import cn.scooper.com.whiteboard.views.whiteboardview.shape.AbsShape;
 import cn.scooper.com.whiteboard.views.whiteboardview.shape.PathShape;
 import cn.scooper.com.whiteboard.views.whiteboardview.shape.PicShape;
+import master.flame.danmaku.controller.DrawHandler;
+import master.flame.danmaku.danmaku.model.BaseDanmaku;
+import master.flame.danmaku.danmaku.model.DanmakuTimer;
+import master.flame.danmaku.danmaku.model.IDanmakus;
+import master.flame.danmaku.danmaku.model.android.DanmakuContext;
+import master.flame.danmaku.danmaku.model.android.Danmakus;
+import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
+import master.flame.danmaku.ui.widget.DanmakuView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
@@ -60,8 +80,8 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     //父控件
     private RelativeLayout rv_parent;
     private RelativeLayout rv_dlg;
+//    private ChatRecyclerView recyclerView;
     private boolean dlgIsOpen = false;
-    private long mExitTime;
     private SfDisplayInfoView displayInfoView;
     private ShapeHelper shapeHelper;
     private String currentPage = "-1";
@@ -105,7 +125,23 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
         }
     };
+
+    private DanmakuView danmakuView;
+
+    private DanmakuContext danmakuContext;
+
+    private BaseDanmakuParser parser = new BaseDanmakuParser() {
+        @Override
+        protected IDanmakus parse() {
+            return new Danmakus();
+        }
+    };
+
     private Dialog mInviteDialog;
+//    private ChatAdapter chatAdapter;
+//    private List<EMMessage> messageList;
+    private boolean isCreate;
+    private boolean showDanmaku;
 
     @Override
     public int bindLayout() {
@@ -119,18 +155,80 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void initView(View view) {
-
+//        messageList=new ArrayList<>();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         displayInfoView = (SfDisplayInfoView) findViewById(R.id.drawerView);
         rv_parent = (RelativeLayout) findViewById(R.id.rv_lay);
-       TextView title= (TextView) findViewById(R.id.title);
+//        recyclerView= (ChatRecyclerView) findViewById(R.id.recyclerView);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        chatAdapter = new ChatAdapter(getBaseContext(), messageList, recyclerView);
+//        recyclerView.setAdapter(chatAdapter);
+
+        TextView title= (TextView) findViewById(R.id.title);
         title.setText(Request.meetingName);
         initArcMenu();
         initListener();
+        initDanmuView();
     }
 
+    private void initDanmuView() {
+        danmakuView = (DanmakuView) findViewById(R.id.danmaku_view);
+        danmakuView.enableDanmakuDrawingCache(true);
+        danmakuView.setCallback(new DrawHandler.Callback() {
+            @Override
+            public void prepared() {
+                showDanmaku = true;
+                danmakuView.start();
+            }
+
+            @Override
+            public void updateTimer(DanmakuTimer timer) {
+
+            }
+
+            @Override
+            public void danmakuShown(BaseDanmaku danmaku) {
+
+            }
+
+            @Override
+            public void drawingFinished() {
+
+            }
+        });
+        danmakuContext = DanmakuContext.create();
+        danmakuView.prepare(parser, danmakuContext);
+    }
+    /**
+     * 向弹幕View中添加一条弹幕
+     * @param content
+     *          弹幕的具体内容
+     * @param  withBorder
+     *          弹幕是否有边框
+     */
+    private void addDanmaku(String content, boolean withBorder) {
+        BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
+        danmaku.text = content;
+        danmaku.padding = 5;
+        danmaku.textSize = sp2px(30);
+        danmaku.textColor = ColorUtil.randomColor(100);
+        danmaku.setTime(danmakuView.getCurrentTime());
+        if (withBorder) {
+            danmaku.borderColor = Color.GREEN;
+        }
+        danmakuView.addDanmaku(danmaku);
+    }
+    /**
+     * sp转px的方法。
+     */
+    public int sp2px(float spValue) {
+        final float fontScale = getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
+    }
     @Override
     public void doBusiness(Context mContext) {
+        isCreate = getIntent().getBooleanExtra("isCreate", false);
+
         initRxBus();
         displayInfoView.setSizes(1280, 700);
         displayInfoView.setOnDrawLineListener(new SfDisplayInfoView.OnDrawLineListener() {
@@ -147,6 +245,14 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         });
         shapeHelper = new ShapeHelper(getApplicationContext());
         shapeHelper.clearByMeeting(Request.meetingId);
+
+        EMClient.getInstance().chatManager().addMessageListener(msgListener);
+//        EMConversation conversation = EMClient.getInstance().chatManager().getConversation(username);
+//        //获取此会话的所有消息
+//        List<EMMessage> messages = conversation.getAllMessages();
+//        //SDK初始化加载的聊天记录为20条，到顶时需要去DB里获取更多
+//        //获取startMsgId之前的pagesize条消息，此方法获取的messages SDK会自动存入到此会话中，APP中无需再次把获取到的messages添加到会话中
+//        List<EMMessage> messages = conversation.loadMoreMsgFromDB(startMsgId, pagesize);
     }
 
     private void initListener() {
@@ -160,6 +266,47 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         findViewById(R.id.iv_clear).setOnClickListener(this);
     }
 
+    EMMessageListener msgListener = new EMMessageListener() {
+
+        @Override
+        public void onMessageReceived(final List<EMMessage> messages) {
+            //收到消息
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+//                    messageList.addAll(messages);
+//                    chatAdapter.notifyDataSetChanged();
+//                    recyclerView.scrollToPosition(messageList.size()-1);
+                    for (EMMessage emMessage:messages){
+                        if (emMessage.getType()==EMMessage.Type.TXT){
+                            EMTextMessageBody textMsg = (EMTextMessageBody) emMessage.getBody();
+                            addDanmaku(textMsg.getMessage(),false);
+                        }
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onCmdMessageReceived(List<EMMessage> messages) {
+            //收到透传消息
+        }
+
+        @Override
+        public void onMessageRead(List<EMMessage> messages) {
+            //收到已读回执
+        }
+
+        @Override
+        public void onMessageDelivered(List<EMMessage> message) {
+            //收到已送达回执
+        }
+
+        @Override
+        public void onMessageChanged(EMMessage message, Object change) {
+            //消息状态变动
+        }
+    };
     private void initRxBus() {
         RxBus.get().toObservable(NotifyEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -181,21 +328,25 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                             displayInfoView.addShapesAndShowResult(ShapeBean.getAbsShape(shapesByMeetingPage));
                             currentPage = inviteEvent.pageId;
                         } else if (inviteEvent.eventType == NotifyEvent.NOTIFY_FORCE_EXIT) {
-                            alertDialog.setTitle(getString(R.string.app_name))
-                                    .setMsg("您已被迫退出会议")
-                                    .setNegativeButton("取消", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            finish();
-                                        }
-                                    })
-                                    .setPositiveButton("确定", new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            finish();
-                                        }
-                                    }).show();
+                            if (!isCreate){
+                                alertDialog.setTitle(getString(R.string.app_name))
+                                        .setMsg("您已被迫退出会议")
+                                        .setNegativeButton("取消", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                finish();
+                                            }
+                                        })
+                                        .setPositiveButton("确定", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                finish();
+                                            }
+                                        }).show();
+                            }
                         } else if (inviteEvent.eventType == NotifyEvent.NOTIFY_USER_JOIN) {
+
+                            ChatUtil.invite(Request.meetingId,inviteEvent.userId);
                             List<ShapeBean> currentShapes = shapeHelper.getShapesByMeetingPage(Request.meetingId, currentPage);
 
                             List<ShapeBean> allPageBean = shapeHelper.getAllShapesByMeetingIdInstandOfPageId(Request.meetingId, currentPage);
@@ -227,9 +378,12 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                 if (id == R.id.iv_eraser) {
                     displayInfoView.setCurrentMode(SfDisplayInfoView.MODE_ERASER);
                 } else if (id == R.id.iv_tool) {
+                    if (dlgIsOpen) return;
                     startOpenAnim(view);
+                    dlgIsOpen = true;
                 } else if (id == R.id.iv_pen) {
                     displayInfoView.setCurrentMode(SfDisplayInfoView.MODE_PAINT);
+//                    recyclerView.setOpMode(true);
                 } else if (id == R.id.iv_invite) {
                     View view2 = LayoutInflater.from(getBaseContext()).inflate(
                             R.layout.activity_invit, null);
@@ -238,6 +392,27 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                         @Override
                         public void onClick(View v) {
                             Request.IINSTANCE.invite(Request.meetingId, userId.getText().toString());
+                            mInviteDialog.dismiss();
+                        }
+                    });
+                    mInviteDialog = new Dialog(MeetingActivity.this, cn.scooper.com.easylib.R.style.AlertDialogStyle);
+                    mInviteDialog.setCancelable(true);
+                    mInviteDialog.setContentView(view2);
+                    mInviteDialog.show();
+                }else if (id == R.id.iv_chat) {
+                    View view2 = LayoutInflater.from(getBaseContext()).inflate(
+                            R.layout.activity_chat, null);
+                    final com.rey.material.widget.EditText userId = (com.rey.material.widget.EditText) view2.findViewById(R.id.userId);
+                    view2.findViewById(R.id.btn_ok).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            EMMessage emMessage = ChatUtil.sendMsg(userId.getText().toString(), Request.meetingId);
+                            if (emMessage!=null){
+                                if (emMessage.getType()==EMMessage.Type.TXT){
+                                    EMTextMessageBody textMsg = (EMTextMessageBody) emMessage.getBody();
+                                    addDanmaku(textMsg.getMessage(),false);
+                                }
+                            }
                             mInviteDialog.dismiss();
                         }
                     });
@@ -254,11 +429,13 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.close) {
-            startCloseAnim();
+            AnimUtil.startCloseAnim(rv_dlg,rv_parent);
+            dlgIsOpen = false;
         } else if (id == R.id.iv_udo) {
             displayInfoView.moveToCenter();
         } else if (id == R.id.iv_info) {
-            Intent intent = new Intent(this, MeetingInfoActivity.class);
+
+            Intent intent = new Intent(this, MeetingUserActivity.class);
             startActivity(intent);
         } else if (id == R.id.iv_clear) {
             alertDialog.setTitle(getString(R.string.app_name))
@@ -279,6 +456,7 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             startActivity(intent);
         } else if (id == R.id.iv_video) {
             displayInfoView.setCurrentMode(SfDisplayInfoView.MODE_SHOW);
+//            recyclerView.setOpMode(false);
         } else if (id == R.id.iv_saveandnew) {
             displayInfoView.removeAllShape();
 
@@ -286,57 +464,17 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
             currentPage = maxPageNum + "";
         }
     }
-
-
-    /**
-     * 关闭对话框
-     */
-    private void startCloseAnim() {
-
-        Animation anim = new ScaleAnimation(1.0f, 0f, 1.0f, 0f,
-                Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
-                1.0f);
-        anim.setDuration(500);
-        anim.setFillAfter(true);
-        anim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-
-                rv_parent.removeView(rv_dlg);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        anim.setDuration(300);
-        rv_dlg.startAnimation(anim);
-        dlgIsOpen = false;
-    }
-
     /**
      * 打开对话框
      *
      * @param view
      */
     private void startOpenAnim(View view) {
-
         if (dlgIsOpen) return;
         addDlgView();
-        int[] loc = new int[2];
-        view.getLocationOnScreen(loc);
-        Animation anim = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
-                Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
-                1.0f);
-        anim.setDuration(300);
-        rv_dlg.startAnimation(anim);
+        AnimUtil.startOpenAnim(view,rv_dlg);
         dlgIsOpen = true;
+
     }
 
     /**
@@ -369,12 +507,39 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
         rv_parent.addView(rv_dlg, layoutParams);
     }
 
-
     @Override
     protected void onDestroy() {
         onReciveBroadCastListener = null;
         MyEventBus.get().removeListener(listenerPage);
         listenerPage = null;
+
+        showDanmaku = false;
+        if (danmakuView != null) {
+            danmakuView.release();
+            danmakuView = null;
+        }
+        EMClient.getInstance().chatManager().removeMessageListener(msgListener);
+//        final EMGroupInfo groupByMeetingId = WhiteBoardApplication.getInstance().getGroupByMeetingId(Request.meetingId);
+//        if (groupByMeetingId!=null) {
+//            new Thread(){
+//                @Override
+//                public void run() {
+//                    try {
+//                        if (isCreate){
+//                            LogUtil.d(TAG,"destroyGroup"+groupByMeetingId.getGroupId());
+//                            EMClient.getInstance().groupManager().destroyGroup(groupByMeetingId.getGroupId());//需异步处理
+//                            WhiteBoardApplication.getInstance().getCreateMeetingList().remove(groupByMeetingId.getGroupName());
+//                        }else{
+//                            LogUtil.d(TAG,"leaveGroup"+groupByMeetingId.getGroupId());
+//                            EMClient.getInstance().groupManager().leaveGroup(groupByMeetingId.getGroupId());//需异步处理
+//                        }
+//                    }catch (HyphenateException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }.start();
+
+//        }
         super.onDestroy();
     }
 
@@ -424,6 +589,22 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                         }
                     });
 
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (danmakuView != null && danmakuView.isPrepared()) {
+            danmakuView.pause();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (danmakuView != null && danmakuView.isPrepared() && danmakuView.isPaused()) {
+            danmakuView.resume();
         }
     }
 }

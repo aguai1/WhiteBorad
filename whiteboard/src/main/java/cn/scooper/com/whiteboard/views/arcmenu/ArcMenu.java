@@ -33,7 +33,7 @@ public class ArcMenu extends ViewGroup implements OnClickListener {
     /**
      * 菜单显示的半径，默认100dp
      */
-    private int mRadius = 120;
+    private int mRadius = 140;
     /**
      * 用户点击的按钮
      */

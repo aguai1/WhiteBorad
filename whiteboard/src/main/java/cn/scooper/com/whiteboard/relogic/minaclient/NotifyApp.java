@@ -9,6 +9,7 @@ import java.util.List;
 
 import cn.scooper.com.easylib.rxbus.RxBus;
 import cn.scooper.com.easylib.utils.LogUtil;
+import cn.scooper.com.easylib.utils.ToastUtils;
 import cn.scooper.com.whiteboard.db.domain.ShapeBean;
 import cn.scooper.com.whiteboard.db.domain.UserBean;
 import cn.scooper.com.whiteboard.event.InviteEvent;

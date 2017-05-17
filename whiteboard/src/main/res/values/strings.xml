@@ -12,5 +12,6 @@
     <string name="filepag2">文件夹二</string>
     <string name="invite">邀请</string>
     <string name="userId">用户id：</string>
+    <string name="send">发送</string>
 
 </resources>

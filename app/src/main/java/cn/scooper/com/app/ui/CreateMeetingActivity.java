@@ -6,6 +6,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroup;
+import com.hyphenate.chat.EMGroupManager;
+import com.hyphenate.exceptions.HyphenateException;
 import com.trello.rxlifecycle.ActivityEvent;
 
 import butterknife.Bind;
@@ -15,9 +19,11 @@ import cn.scooper.com.easylib.ui.BaseActivity;
 import cn.scooper.com.easylib.utils.LogUtil;
 import cn.scooper.com.easylib.utils.ToastUtils;
 import cn.scooper.com.whiteboard.R;
+import cn.scooper.com.whiteboard.WhiteBoardApplication;
 import cn.scooper.com.whiteboard.event.NotifyEvent;
 import cn.scooper.com.whiteboard.relogic.minaclient.Request;
 import cn.scooper.com.whiteboard.ui.MeetingActivity;
+import cn.scooper.com.whiteboard.utils.ChatUtil;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
@@ -68,7 +74,12 @@ public class CreateMeetingActivity extends BaseActivity {
                             ToastUtils.showShort("连接服务器失败");
                         }else if (inviteEvent.eventType == NotifyEvent.NOTIFY_CREATE_SUCCEED) {
                             Request.IINSTANCE.join(inviteEvent.meetingId);
-                            startActivity(new Intent(CreateMeetingActivity.this, MeetingActivity.class));
+                            Intent intent = new Intent(CreateMeetingActivity.this, MeetingActivity.class);
+                            intent.putExtra("isCreate",true);
+                            startActivity(intent);
+                            WhiteBoardApplication.getInstance().getCreateMeetingList().add(inviteEvent.meetingId);
+                            ChatUtil.createMeeting(inviteEvent.meetingId);
+
                         }
                     }
                 }, new Action1<Throwable>() {

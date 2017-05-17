@@ -38,17 +38,19 @@
             android:background="@drawable/bg_btn_video"
             android:layout_marginLeft="10dp"
             />
+
+        <Button
+            android:id="@+id/iv_udo"
+            android:layout_marginLeft="10dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_all_out_white_24dp"
+            />
         <View
             android:layout_width="1dp"
             android:layout_height="fill_parent"
             android:background="#ccc"
             android:layout_margin="10dp"/>
-        <Button
-            android:id="@+id/iv_udo"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:background="@drawable/bg_btn_udo"
-            />
         <Button
             android:id="@+id/iv_clear"
             android:layout_width="45dp"

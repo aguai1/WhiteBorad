@@ -16,7 +16,7 @@ public class SplashActivity extends BaseActivity {
 
 	@Override
 	public boolean translucentStatus() {
-		return false;
+		return true;
 	}
 
 

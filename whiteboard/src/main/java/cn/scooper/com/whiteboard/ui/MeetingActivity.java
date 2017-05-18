@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ import cn.scooper.com.whiteboard.relogic.minaclient.Request;
 import cn.scooper.com.whiteboard.utils.AnimUtil;
 import cn.scooper.com.whiteboard.utils.ChatUtil;
 import cn.scooper.com.whiteboard.utils.ColorUtil;
+import cn.scooper.com.whiteboard.utils.StringUtils;
 import cn.scooper.com.whiteboard.views.ChatRecyclerView;
 import cn.scooper.com.whiteboard.views.Slider;
 import cn.scooper.com.whiteboard.views.arcmenu.ArcMenu;
@@ -406,7 +408,11 @@ public class MeetingActivity extends BaseActivity implements View.OnClickListene
                     view2.findViewById(R.id.btn_ok).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            EMMessage emMessage = ChatUtil.sendMsg(userId.getText().toString(), Request.meetingId);
+                            String s = userId.getText().toString();
+                            if (TextUtils.isEmpty(s)){
+                                return;
+                            }
+                            EMMessage emMessage = ChatUtil.sendMsg(s, Request.meetingId);
                             if (emMessage!=null){
                                 if (emMessage.getType()==EMMessage.Type.TXT){
                                     EMTextMessageBody textMsg = (EMTextMessageBody) emMessage.getBody();
